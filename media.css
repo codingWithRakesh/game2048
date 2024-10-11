@@ -1,0 +1,29 @@
+@media only screen and (max-width: 1050px) {
+    .showData {
+        width: 26rem;
+        height: 26rem;
+        align-content: space-around;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .container {
+        padding: 1rem;
+        align-content: center;
+        gap: 3rem;
+    }
+
+    .showData{
+        width: 22rem;
+        height: 22rem;
+    }
+
+    .smallNav{
+        margin-right: 0;
+    }
+
+    .modalBox{
+        width: 20rem;
+        text-align: center;
+    }
+}
