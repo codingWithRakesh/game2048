@@ -10,17 +10,32 @@ const TwoorFour = () => {
   return Math.random() > 0.5 ? 2 : 4
 }
 
+function log<T>(...datas: T[]) {
+  console.log(...datas)
+}
+
 const randomData = () => {
   while (true) {
     let i = Math.floor(Math.random() * n);
     let j = Math.floor(Math.random() * n);
     if (!arrBoxs[i][j].innerText) {
       arrBoxs[i][j].innerText = String(TwoorFour());
-      arrBoxs[i][j].classList.add('red')
+      if (arrBoxs[i][j].innerText === '2') {
+        addStyle(i, j, 2)
+      } else {
+        addStyle(i, j, 4)
+      }
       break;
     }
   }
 };
+
+function addStyle(i: number, j: number, n: number) {
+  arrBoxs[i][j].classList.add(`tile-${n}`)
+}
+function removeStyle(i: number, j: number, n: number) {
+  arrBoxs[i][j].classList.remove(`tile-${n}`)
+}
 
 randomData();
 randomData();
@@ -47,6 +62,7 @@ const addScore = (value: number) => {
 }
 
 const leftButton = () => {
+  let isMovable = false
   for (let i = 0; i < arrBoxs.length; i++) {
     let prevValue = 0;
     let prevColum = -1;
@@ -59,32 +75,39 @@ const leftButton = () => {
         } else {
           let addValue = prevValue + boxData
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, boxData)
+          removeStyle(i, prevColum, boxData)
+          addStyle(i, prevColum, addValue)
           arrBoxs[i][prevColum].innerText = String(addValue)
           addScore(addValue)
           prevValue = 0
+          isMovable = true
         }
       }
     }
 
     let columToSet = 0;
     for (let j = 0; j < arrBoxs[0].length; j++) {
-      arrBoxs[i][j].classList.remove('red')
       if (arrBoxs[i][j].innerText) {
         if (j != columToSet) {
           let temp = arrBoxs[i][j].innerText;
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, Number(temp))
+          addStyle(i, columToSet, Number(temp))
           arrBoxs[i][columToSet].innerText = temp
+          isMovable = true
         }
         columToSet++
       }
     }
   }
-  if (!checkGameOver()) {
+  if (!checkGameOver() && isMovable) {
     randomData();
   }
 }
 
 const rightButton = () => {
+  let isMovable = false
   for (let i = 0; i < arrBoxs.length; i++) {
     let prevValue = 0;
     let prevColum = -1;
@@ -97,9 +120,13 @@ const rightButton = () => {
         } else {
           let addValue = prevValue + boxData
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, boxData)
+          removeStyle(i, prevColum, boxData)
+          addStyle(i, prevColum, addValue)
           arrBoxs[i][prevColum].innerText = String(addValue)
           addScore(addValue)
           prevValue = 0
+          isMovable = true
         }
       }
     }
@@ -111,18 +138,22 @@ const rightButton = () => {
         if (j != columToSet) {
           let temp = arrBoxs[i][j].innerText;
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, Number(temp))
+          addStyle(i, columToSet, Number(temp))
           arrBoxs[i][columToSet].innerText = temp
+          isMovable = true
         }
         columToSet--
       }
     }
   }
-  if (!checkGameOver()) {
+  if (!checkGameOver() && isMovable) {
     randomData();
   }
 }
 
 const upButton = () => {
+  let isMovable = false
   for (let j = 0; j < arrBoxs[0].length; j++) {
     let prevValue = 0;
     let prevRow = -1;
@@ -135,9 +166,13 @@ const upButton = () => {
         } else {
           let addValue = prevValue + boxData
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, boxData)
+          removeStyle(prevRow, j, boxData)
+          addStyle(prevRow, j, addValue)
           arrBoxs[prevRow][j].innerText = String(addValue)
           addScore(addValue)
           prevValue = 0
+          isMovable = true
         }
       }
     }
@@ -149,18 +184,22 @@ const upButton = () => {
         if (i != rowToSet) {
           let temp = arrBoxs[i][j].innerText;
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, Number(temp))
+          addStyle(rowToSet, j, Number(temp))
           arrBoxs[rowToSet][j].innerText = temp
+          isMovable = true
         }
         rowToSet++
       }
     }
   }
-  if (!checkGameOver()) {
+  if (!checkGameOver() && isMovable) {
     randomData();
   }
 }
 
 const downButton = () => {
+  let isMovable = false
   for (let j = 0; j < arrBoxs[0].length; j++) {
     let prevValue = 0;
     let prevRow = -1;
@@ -173,9 +212,13 @@ const downButton = () => {
         } else {
           let addValue = prevValue + boxData
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, boxData)
+          removeStyle(prevRow, j, boxData)
+          addStyle(prevRow, j, addValue)
           arrBoxs[prevRow][j].innerText = String(addValue)
           addScore(addValue)
           prevValue = 0
+          isMovable = true
         }
       }
     }
@@ -187,13 +230,16 @@ const downButton = () => {
         if (i != rowToSet) {
           let temp = arrBoxs[i][j].innerText;
           arrBoxs[i][j].innerText = ''
+          removeStyle(i, j, Number(temp))
+          addStyle(rowToSet, j, Number(temp))
           arrBoxs[rowToSet][j].innerText = temp
+          isMovable = true
         }
         rowToSet--
       }
     }
   }
-  if (!checkGameOver()) {
+  if (!checkGameOver() && isMovable) {
     randomData();
   }
 }
