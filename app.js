@@ -287,3 +287,15 @@ let buttonNew = document.querySelector('#buttonNew');
 buttonNew.addEventListener('click', () => {
     location.reload();
 });
+// mode change
+const body = document.querySelector('body');
+const mode = document.querySelector('#mode');
+mode.addEventListener('click', () => {
+    body.classList.toggle('dark');
+    if (body.classList.contains('dark')) {
+        mode.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    }
+    else {
+        mode.innerHTML = '<i class="fa-solid fa-moon"></i>';
+    }
+});
